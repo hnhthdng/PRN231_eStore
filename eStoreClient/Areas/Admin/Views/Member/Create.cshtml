@@ -1,0 +1,28 @@
+﻿@model eStoreClient.DTO.Member.MemberRequestDTO
+
+<h1>Create Member</h1>
+
+<!-- Form to create a new member -->
+<form method="post">
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" id="Email" name="Email" class="form-control" value="@Model.Email" required />
+    </div>
+    <div class="form-group">
+        <label for="CompanyName">Company Name</label>
+        <input type="text" id="CompanyName" name="CompanyName" class="form-control" value="@Model.CompanyName" required />
+    </div>
+    <div class="form-group">
+        <label for="City">City</label>
+        <input type="text" id="City" name="City" class="form-control" value="@Model.City" required />
+    </div>
+    <div class="form-group">
+        <label for="Country">Country</label>
+        <input type="text" id="Country" name="Country" class="form-control" value="@Model.Country" />
+    </div>
+    <div class="form-group">
+        <label for="Password">Password</label>
+        <input type="password" id="Password" name="Password" class="form-control" value="@Model.Password" required />
+    </div>
+    <button type="submit" class="btn btn-success">Create Member</button>
+</form>

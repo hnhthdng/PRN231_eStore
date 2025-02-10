@@ -1,0 +1,59 @@
+﻿@model MemberResponseDTO
+@using Microsoft.AspNetCore.Http
+@using eStoreClient.DTO.Member
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var role = HttpContextAccessor.HttpContext.Session.GetString("Role");
+    var isEditMode = ViewData["IsEditMode"] as bool? ?? false;
+}
+
+<h2>Profile</h2>
+
+@if (role == "Member")
+{
+    <form method="post" asp-action="Profile">
+        <div class="form-group">
+            <label for="Email">Email:</label>
+            <input type="text" class="form-control" id="Email" name="Email" value="@Model.Email" disabled />
+        </div>
+
+        <div class="form-group">
+            <label for="CompanyName">Company Name:</label>
+            <input type="text" class="form-control" id="CompanyName" name="CompanyName" value="@Model.CompanyName" disabled />
+        </div>
+
+        <div class="form-group">
+            <label for="City">City:</label>
+            <input type="text" class="form-control" id="City" name="City" value="@Model.City" disabled />
+        </div>
+
+        <div class="form-group">
+            <label for="Country">Country:</label>
+            <input type="text" class="form-control" id="Country" name="Country" value="@Model.Country" disabled />
+        </div>
+
+        <div class="form-group mt-3">
+            <button type="button" class="btn btn-primary" id="btnUpdate" onclick="enableEditMode()">Update</button>
+            <button type="submit" class="btn btn-success" id="btnSave" style="display: none;">Save</button>
+        </div>
+        <div class="form-group mt-3">
+            <button type="button" class="btn btn-primary" id="btnChangePassword" onclick="redirectToChangePassword()">Change password</button>
+        </div>
+    </form>
+}
+<script>
+    function enableEditMode() {
+        // Bật chế độ chỉnh sửa
+        document.getElementById('CompanyName').removeAttribute('disabled');
+        document.getElementById('City').removeAttribute('disabled');
+        document.getElementById('Country').removeAttribute('disabled');
+
+        // Hiển thị nút Save, ẩn nút Update
+        document.getElementById('btnUpdate').style.display = 'none';
+        document.getElementById('btnSave').style.display = 'inline-block';
+    }
+    function redirectToChangePassword() {
+        // Chuyển hướng đến trang Change Password
+        window.location.href = '@Url.Action("ChangePassword", "Account")';
+    }
+</script>

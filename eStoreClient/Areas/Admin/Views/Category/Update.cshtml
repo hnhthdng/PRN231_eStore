@@ -1,0 +1,16 @@
+﻿@using eStoreClient.DTO.Category
+@model CategoryResponseDTO
+
+<h2>Update Category</h2>
+
+<form asp-action="Update" method="post">
+    <input type="hidden" id="CategoryId" name="CategoryId" value="@Model.CategoryId" />
+
+    <div class="mb-3">
+        <label for="CategoryName" class="form-label">Category Name</label>
+        <input type="text" class="form-control" id="CategoryName" name="CategoryName" value="@Model.CategoryName" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,52 @@
+﻿@using eStoreClient.DTO.Order
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model OrderRequestDTO
+
+<h2>Create New Order</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label for="MemberId" class="form-label">Member</label>
+        <select class="form-control" id="MemberId" name="MemberId">
+            <option value="">-- Select Member --</option>
+
+            @if (ViewBag.Members != null)
+            {
+                @foreach (var member in ViewBag.Members)
+                {
+                    <option value="@member.Value" selected="@(Model.MemberId.ToString() == member.Value ? "selected" : null)">
+                        @member.Text
+                    </option>
+                }
+            }
+        </select>
+    </div>
+
+    <!-- Order Date -->
+    <div class="mb-3">
+        <label for="OrderDate" class="form-label">Order Date</label>
+        <input type="date" class="form-control" id="OrderDate" name="OrderDate" asp-for="OrderDate" required>
+    </div>
+
+    <!-- Required Date -->
+    <div class="mb-3">
+        <label for="RequiredDate" class="form-label">Required Date</label>
+        <input type="date" class="form-control" id="RequiredDate" name="RequiredDate" asp-for="RequiredDate" required>
+    </div>
+
+    <!-- Shipped Date -->
+    <div class="mb-3">
+        <label for="ShippedDate" class="form-label">Shipped Date</label>
+        <input type="date" class="form-control" id="ShippedDate" name="ShippedDate" asp-for="ShippedDate">
+    </div>
+
+    <!-- Freight -->
+    <div class="mb-3">
+        <label for="Freight" class="form-label">Freight</label>
+        <input type="text" class="form-control" id="Freight" name="Freight" asp-for="Freight" required>
+    </div>
+
+    <!-- Submit and Cancel Buttons -->
+    <button type="submit" class="btn btn-primary">Create Order</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancel</a>
+</form>
