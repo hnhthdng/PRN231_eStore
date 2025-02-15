@@ -8,5 +8,6 @@
         public DateTime RequiredDate { get; set; }
         public DateTime ShippedDate { get; set; }
         public string Freight { get; set; }
+        public decimal Total { get; set; }
     }
 }

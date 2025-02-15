@@ -1,6 +1,7 @@
 ﻿using eStoreClient.Models;
 using eStoreClient.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace eStoreClient.Controllers
 {
@@ -28,12 +29,42 @@ namespace eStoreClient.Controllers
             }
             var member = _memberService.GetMemberByEmailAsync(memberEmail).Result;
             var orders = _orderService.GetOrdersByMemberIdAsync(member.MemberId).Result;
-            return View(orders);
+            var orderViewModel = new List<OrderViewModel>();
+            foreach (var order in orders)
+            {
+                var orderDetails = _orderDetailService.GetOrderDetailsByOrderIdAsync(order.OrderId).Result;
+
+                decimal totalAfterDiscount = 0;
+
+                if (orderDetails != null && orderDetails.Any())
+                {
+                  
+                    foreach (var orderDetail in orderDetails)
+                    {
+                        decimal totalBeforeDiscount = orderDetail.Quantity * orderDetail.UnitPrice;
+                        decimal discount = orderDetail.Discount / 100m;
+                        totalAfterDiscount += totalBeforeDiscount * (1 - discount);
+                    }
+                }
+
+                var orderItem = new OrderViewModel
+                {
+                    OrderId = order.OrderId,
+                    Email = memberEmail,
+                    OrderDate = order.OrderDate,
+                    RequiredDate = order.RequiredDate,
+                    ShippedDate = order.ShippedDate,
+                    Freight = order.Freight,
+                    Total = totalAfterDiscount
+                };
+                orderViewModel.Add(orderItem);
+            }
+            return View(orderViewModel);
         }
 
-        public IActionResult OrderDetail(int id)
+        public IActionResult OrderDetail(int orderId)
         {
-            var orderDetail = _orderDetailService.GetOrderDetailsByOrderIdAsync(id).Result;
+            var orderDetail = _orderDetailService.GetOrderDetailsByOrderIdAsync(orderId).Result;
             var orderDetailViewModel = new List<OrderDetailViewModel>();
             foreach (var item in orderDetail)
             {
@@ -41,6 +72,7 @@ namespace eStoreClient.Controllers
                 var orderDetailItem = new OrderDetailViewModel
                 {
                     OrderId = item.OrderId,
+                    ProductId = product.ProductId,
                     ProductName = product.ProductName,
                     Quantity = item.Quantity,
                     UnitPrice = item.UnitPrice,

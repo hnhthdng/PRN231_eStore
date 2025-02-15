@@ -1,5 +1,5 @@
 ﻿@using eStoreClient.DTO.Order
-@model List<OrderResponseDTO> 
+@model List<OrderViewModel> 
 
 @{
     ViewData["Title"] = "Order List";
@@ -18,6 +18,8 @@
                 <th>Required Date</th>
                 <th>Shipped Date</th>
                 <th>Freight</th>
+                <th>Total</th>
+                <th>Detail</th>
             </tr>
         </thead>
         <tbody>
@@ -29,7 +31,10 @@
                     <td>@order.RequiredDate.ToString("yyyy-MM-dd")</td>
                     <td>@order.ShippedDate.ToString("yyyy-MM-dd")</td>
                     <td>@order.Freight</td>
-                    
+                    <td>@order.Total</td>
+                    <td>
+                        <a href="@Url.Action("OrderDetail", "Order", new { orderId = order.OrderId })" class="btn btn-info btn-sm">Detail</a>
+                    </td>
                 </tr>
             }
         </tbody>
